@@ -4,6 +4,10 @@ import * as taskController from './../controllers/taskController.js';
 const router = Express.Router();
 
 router
+  .route('/critics')
+  .get(taskController.aliasCritics, taskController.getAllTasks);
+
+router
   .route('/')
   .get(taskController.getAllTasks)
   .post(taskController.createTask);

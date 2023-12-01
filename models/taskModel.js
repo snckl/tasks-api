@@ -31,8 +31,19 @@ const taskSchema = new Schema({
   attachments: {
     type: String,
   },
+  reportedBy: {
+    contactPerson: {
+      type: String,
+      required: [true, 'Name must be provided by the reporter.'],
+    },
+    contactEmail: {
+      type: String,
+      required: [true, 'Email required in order to contact.'],
+    },
+  },
   uploadDate: {
     type: Date,
+    default: Date.now(),
   },
 });
 
