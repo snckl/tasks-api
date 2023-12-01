@@ -3,10 +3,14 @@ import mongoose, { Schema } from 'mongoose';
 
 const port = process.env.PORT;
 
-mongoose
-  .connect(process.env.DATABASE)
-  .then(() => console.log('Database connection is successful.'));
+mongoose.connect(process.env.DATABASE).then(() => {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Database connection is successful.');
+  }
+});
 
 app.listen(port, () => {
-  console.log(`App running on port ${port}...`);
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`App running on port ${port}...`);
+  }
 });

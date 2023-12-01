@@ -7,6 +7,8 @@ router
   .route('/critics')
   .get(taskController.aliasCritics, taskController.getAllTasks);
 
+router.route('/stats').get(taskController.getTaskStats);
+
 router
   .route('/')
   .get(taskController.getAllTasks)

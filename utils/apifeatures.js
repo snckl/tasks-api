@@ -10,7 +10,6 @@ export default class APIFeatures {
     excludedFields.forEach((field) => delete queryObj[field]);
 
     //Advanced Filtering
-    // There are no numerical values but for implementations.
     const queryStr = JSON.stringify(queryObj);
     queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
@@ -21,7 +20,6 @@ export default class APIFeatures {
   }
   sort() {
     //Sorting
-    // There are no numerical values but for implementations.
     if (this.queryString.sort) {
       const sortBy = this.queryString.sort.split(',').join(' ');
       this.query = this.query.sort(sortBy);

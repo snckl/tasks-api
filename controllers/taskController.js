@@ -59,7 +59,7 @@ export const createTask = async (req, res, next) => {
   } catch (error) {
     res.status(400).json({
       status: 'Fail',
-      message: 'Invalid data.',
+      message: error.message,
     });
   }
 };
@@ -91,6 +91,40 @@ export const deleteTasks = async (req, res, next) => {
     res.status(204).json({
       status: 'success',
       data: null,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'Fail',
+      message: 'Something went wrong.',
+    });
+  }
+};
+
+export const getTaskStats = async (req, res, next) => {
+  try {
+    const stats = await Task.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $group: {
+          _id: { $toUpper: '$severity' },
+          numOfTasks: { $sum: 1 },
+          totalCost: { $sum: '$accumulatedCost' },
+          avgCost: { $avg: '$accumulatedCost' },
+          maxCost: { $max: '$accumulatedCost' },
+          minCost: { $min: '$accumulatedCost' },
+        },
+      },
+      {
+        $sort: { avgCost: -1 },
+      },
+    ]);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        stats,
+      },
     });
   } catch (error) {
     res.status(500).json({
