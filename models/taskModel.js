@@ -7,7 +7,6 @@ const taskSchema = new Schema(
       type: String,
       required: [true, 'Task must have a title'],
       unique: [true, 'This task already exist'],
-      validate: [validator.isAlpha, 'Title must contain characters.'],
     },
     severity: {
       type: String,
