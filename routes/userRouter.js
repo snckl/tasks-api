@@ -3,9 +3,10 @@ import * as userController from './../controllers/userController.js';
 import * as authController from './../controllers/authController.js';
 const router = Express.Router();
 
-router.post('/signup', authController.signup);
-router.post('/login', authController.login);
+router.post('/signup', authController.signup); // User signup
+router.post('/login', authController.login); // User login
 
+// Routes for password reset for forgotten password and account deletion
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 router.delete(
@@ -14,6 +15,7 @@ router.delete(
   userController.deleteMyAccount
 );
 
+// Routes for updating password
 router.patch(
   '/updatePassword',
   authController.protection,
