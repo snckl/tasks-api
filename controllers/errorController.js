@@ -10,8 +10,9 @@ const developmentError = (err, res) => {
 };
 
 const duplicateTitleError = (err) => {
+  const errors = Object.values(err.keyValue).map((er) => er);
   err.statusCode = 409;
-  err.message = `${err.keyValue.title} is already exist.`;
+  err.message = `${errors.join('. ')} is already exist.`;
   err.isOperational = true;
   return new AppError(err.message, err.statusCode);
 };

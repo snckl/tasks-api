@@ -1,5 +1,6 @@
 import Express from 'express';
 import * as taskController from './../controllers/taskController.js';
+import * as authController from './../controllers/authController.js';
 
 const router = Express.Router();
 
@@ -11,13 +12,17 @@ router.route('/stats').get(taskController.getTaskStats);
 
 router
   .route('/')
-  .get(taskController.getAllTasks)
+  .get(authController.protection, taskController.getAllTasks)
   .post(taskController.createTask);
 
 router
   .route('/:id')
   .get(taskController.getTaskById)
   .patch(taskController.updateTask)
-  .delete(taskController.deleteTasks);
+  .delete(
+    authController.protection,
+    authController.restrictTo('admin'),
+    taskController.deleteTasks
+  );
 
 export default router;
