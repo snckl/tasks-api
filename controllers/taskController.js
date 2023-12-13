@@ -3,6 +3,7 @@ import Task from './../models/taskModel.js';
 import APIFeatures from './../utils/apifeatures.js';
 import catchAsync from './../utils/catchAsync.js';
 import mongoose from 'mongoose';
+import isValidId from './../utils/validId.js';
 
 // Middleware to alias critics by setting severity to 'Critical' and priority to 'High'
 export const aliasCritics = (req, res, next) => {
@@ -35,11 +36,7 @@ export const getAllTasks = catchAsync(async (req, res, next) => {
 // Controller function to get a task by its ID
 export const getTaskById = catchAsync(async (req, res, next) => {
   // Check if the provided ID is a valid MongoDB ObjectId
-  const isValidObjectId = mongoose.Types.ObjectId.isValid(req.params.id);
-  if (!isValidObjectId) {
-    next(new AppError('Task could not found with provided id', 404));
-    return;
-  }
+  isValidId(req.params.id, next, 'Task');
 
   // Find the task by its ID
   const task = await Task.findById(req.params.id);
@@ -70,11 +67,8 @@ export const createTask = catchAsync(async (req, res, next) => {
 // Controller function to update a task by its ID
 export const updateTask = catchAsync(async (req, res, next) => {
   // Check if the provided ID is a valid MongoDB ObjectId
-  const isValidObjectId = mongoose.Types.ObjectId.isValid(req.params.id);
-  if (!isValidObjectId) {
-    next(new AppError('Task could not found with provided id', 404));
-    return;
-  }
+  isValidId(req.params.id, next, 'Task');
+
   // Update the task by its ID with the data from the request body
   const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
@@ -92,11 +86,7 @@ export const updateTask = catchAsync(async (req, res, next) => {
 
 // Controller function to delete a task by its ID
 export const deleteTasks = catchAsync(async (req, res, next) => {
-  const isValidObjectId = mongoose.Types.ObjectId.isValid(req.params.id);
-  if (!isValidObjectId) {
-    next(new AppError('Task could not found with provided id', 404));
-    return;
-  }
+  isValidId(req.params.id, next, 'Task');
   await Task.findByIdAndDelete(req.params.id);
 
   res.status(204).json({

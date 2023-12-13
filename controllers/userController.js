@@ -1,45 +1,58 @@
 import catchAsync from './../utils/catchAsync.js';
 import User from './../models/userModel.js';
+import isValidId from './../utils/validId.js';
 
-// Respond with a 500 Internal Server Error and a message indicating that the route is not defined
-export const getAllUsers = (req, res, next) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined.',
-  });
-};
+//Checks if id is valid.
 
-// Respond with a 500 Internal Server Error and a message indicating that the route is not defined
-export const createUser = (req, res, next) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined.',
-  });
-};
+// Gets all users.
+export const getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find().select('-passwordResetToken');
 
-// Respond with a 500 Internal Server Error and a message indicating that the route is not defined
-export const getUser = (req, res, next) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined.',
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: {
+      users,
+    },
   });
-};
+});
 
-// Respond with a 500 Internal Server Error and a message indicating that the route is not defined
-export const updateUser = (req, res, next) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined.',
-  });
-};
+// Get user with provided ID
+export const getUser = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
-// Respond with a 500 Internal Server Error and a message indicating that the route is not defined
-export const deleteUser = (req, res, next) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined.',
+  isValidId(id, next, 'User');
+
+  const user = await User.findById(id).select('-passwordResetToken');
+
+  res.status(200).json({
+    status: 'success',
+    message: user,
   });
-};
+});
+
+// WARNING!!! USER ONLY CAN UPDATE HIS NAME AND EMAIL ON THIS CONTROLLER.
+export const updateUser = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  console.log(id);
+  isValidId(id, next, 'User');
+  const user = await User.findByIdAndUpdate(
+    id,
+    {
+      name: req.body.name,
+      email: req.body.email,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(201).json({
+    status: 'success',
+    data: user,
+  });
+});
 
 // Controller function to delete the user's own account
 export const deleteMyAccount = catchAsync(async (req, res, next) => {

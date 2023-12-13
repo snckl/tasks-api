@@ -7,7 +7,7 @@ process.on('uncaughtException', (err) => {
 });
 
 import app from './app.js';
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
 const port = process.env.PORT;
 
