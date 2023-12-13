@@ -27,6 +27,10 @@ router.route('/').get(userController.getAllUsers);
 router
   .route('/:id')
   .get(userController.getUser)
-  .patch(userController.updateUser);
+  .patch(
+    authController.protection,
+    authController.restrictTo('admin'),
+    userController.updateUser
+  );
 
 export default router;
