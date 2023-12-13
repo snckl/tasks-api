@@ -29,7 +29,6 @@ router
   .get(userController.getUser)
   .patch(
     authController.protection,
-    authController.restrictTo('admin'),
     userController.updateUser
   );
 
