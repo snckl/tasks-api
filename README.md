@@ -51,10 +51,9 @@ npm start
   **DELETE : http://localhost:8001/api/v1/users/deleteMyAccount Delete current account**<br>
   **PATCH : http://localhost:8001/api/v1/users/updatePassword Update Password**<br>
   **GET : http://localhost:8001/api/v1/users Get all the users**<br>
-  **POST : http://localhost:8001/api/v1/users Create new user**<br>
   **GET : http://localhost:8001/api/v1/users/:id Get user by id**<br>
   **PATCH : http://localhost:8001/api/v1/users/:id Update user**<br>
-  **DELETE : http://localhost:8001/api/v1/users/:id Delete user**<br>
+  **DELETE : http://localhost:8001/api/v1/users/deleteMyAccount Delete your own account**<br>
 
   
 
